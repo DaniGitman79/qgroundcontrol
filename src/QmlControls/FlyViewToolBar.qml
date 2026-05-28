@@ -37,6 +37,13 @@ Rectangle {
 
     QGCPalette { id: qgcPal }
 
+    // Create controller only when a real active vehicle exists. FactPanelController binds to the vehicle at construction time.
+    Loader {
+        id: factControllerLoader
+        active: !!_activeVehicle && !_activeVehicle.isOfflineEditingVehicle
+        sourceComponent: FactPanelController { }
+    }
+
 
     /// Bottom single pixel divider
     Rectangle {
@@ -87,14 +94,15 @@ Rectangle {
         }
 
         
-
+        // Added GNSS
         QGCButton {
             id:      stopGNSSfusionButton
             text:    qsTr("STOP GNSS Fusion")
             visible: _activeVehicle
-
+            // heisst wir aktivieren und deaktivieren button
             checkable: true
 
+            // optical properties of Button
             Rectangle {
                 anchors.fill: parent
                 color: "transparent"
@@ -104,8 +112,20 @@ Rectangle {
             }
 
             onClicked: {
+                var paramName = "EKF2_GPS_CTRL"
                 var desired = stopGNSSfusionButton.checked ? 0 : 7
-                console.log("STOP GNSS Fusion clicked. checked:", stopGNSSfusionButton.checked, "desired EKF2_GPS_CTRL:", desired)
+                console.log("STOP GNSS Fusion clicked. checked:", stopGNSSfusionButton.checked, "desired", paramName, ":", desired)
+
+                // MAVLink component id for autopilot (MAV_COMP_ID_AUTOPILOT1)
+                var fact = factControllerLoader.item.getParameterFact(1, paramName, false)
+                if (!fact) {
+                    console.log("Failed to get Fact for", paramName)
+                    return
+                }
+
+                console.log("Writing", paramName, "->", desired)
+                // rawValue/value are Qt properties; assigning triggers the C++ setter even without Q_INVOKABLE.
+                fact.rawValue = desired
             }
         }
 
