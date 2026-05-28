@@ -18,6 +18,8 @@ import QGroundControl.Palette
 import QGroundControl.MultiVehicleManager
 import QGroundControl.ScreenTools
 import QGroundControl.Controllers
+import QGroundControl.FactSystem
+import QGroundControl.FactControls
 
 Rectangle {
     id:     _root
@@ -34,6 +36,7 @@ Rectangle {
     }
 
     QGCPalette { id: qgcPal }
+
 
     /// Bottom single pixel divider
     Rectangle {
@@ -82,6 +85,30 @@ Rectangle {
             onClicked:          _activeVehicle.closeVehicle()
             visible:            _activeVehicle && _communicationLost
         }
+
+        
+
+        QGCButton {
+            id:      stopGNSSfusionButton
+            text:    qsTr("STOP GNSS Fusion")
+            visible: _activeVehicle
+
+            checkable: true
+
+            Rectangle {
+                anchors.fill: parent
+                color: "transparent"
+                radius: parent.height * 0.08
+                border.width: stopGNSSfusionButton.checked ? 2 : 0
+                border.color: qgcPal.brandingPurple
+            }
+
+            onClicked: {
+                var desired = stopGNSSfusionButton.checked ? 0 : 7
+                console.log("STOP GNSS Fusion clicked. checked:", stopGNSSfusionButton.checked, "desired EKF2_GPS_CTRL:", desired)
+            }
+        }
+
     }
 
     QGCFlickable {
