@@ -271,6 +271,27 @@ FlightMap {
         }
     }
 
+    
+    // Add Ghost Vehicles to the map
+    MapItemView {
+        model: QGroundControl.multiVehicleManager.vehicles
+        delegate: GhostGPSVehicleMapItem {
+            vehicle: object
+
+            coordinate: object && object.gps &&
+                        object.gps.lat && object.gps.lon &&
+                        !isNaN(object.gps.lat.rawValue) &&
+                        !isNaN(object.gps.lon.rawValue) ?
+                        QtPositioning.coordinate(object.gps.lat.rawValue,
+                                                object.gps.lon.rawValue) :
+                        QtPositioning.coordinate()
+
+            map: _root
+            size: pipMode ? ScreenTools.defaultFontPixelHeight : ScreenTools.defaultFontPixelHeight * 5
+            z: QGroundControl.zOrderVehicles + 1
+        }
+    }
+
     // Add the vehicles to the map
     MapItemView {
         model: QGroundControl.multiVehicleManager.vehicles
@@ -282,6 +303,8 @@ FlightMap {
             z:              QGroundControl.zOrderVehicles
         }
     }
+    
+
     // Add distance sensor view
     MapItemView{
         model: QGroundControl.multiVehicleManager.vehicles
@@ -306,7 +329,7 @@ FlightMap {
             z:              QGroundControl.zOrderVehicles
         }
     }
-
+    
     // Add the items associated with each vehicles flight plan to the map
     Repeater {
         model: QGroundControl.multiVehicleManager.vehicles

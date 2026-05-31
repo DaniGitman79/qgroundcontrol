@@ -2,6 +2,8 @@
     <qresource prefix="/qml">
         <file alias="AirLinkSettings.qml">src/Comms/AirLink/AirLinkSettings.qml</file>
         <file alias="Viewer3D/Viewer3D.qml">src/Viewer3D/Viewer3DQml/Viewer3D.qml</file>
+        <file alias="FlightMap/MapItems/GhostGPSVehicleMapItem.qml">src/FlightMap/MapItems/GhostGPSVehicleMapItem.qml</file>
+        <file alias="FlightMap/Images/vehicleGhostArrow.svg">src/FlightMap/Images/vehicleGhostArrow.svg</file>
         <file alias="Viewer3D/qmldir">src/QmlControls/Viewer3D/qmldir</file>
         <file alias="Viewer3D/Models3D/CameraLightModel.qml">src/Viewer3D/Viewer3DQml/Models3D/CameraLightModel.qml</file>
         <file alias="Viewer3D/Models3D/Viewer3DModel.qml">src/Viewer3D/Viewer3DQml/Models3D/Viewer3DModel.qml</file>
